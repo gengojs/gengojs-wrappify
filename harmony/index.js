@@ -25,19 +25,20 @@
 
   Wrappify.prototype.hapi = function() {
     var core = this.core;
-
-    function ship(plugin, option, next) {
-      plugin.ext('onPreHandler', function(request, reply) {
-        core.ship.bind(core)(request);
-        reply.continue();
-      });
-      next();
+    var plugin = {
+      register: function hapi(plugin, options, next) {
+        plugin.ext('onPreResponse', function(request, reply) {
+          core.ship.bind(core)(request);
+          reply.continue();
+        });
+        return next();
+      }
     }
-
-    return {
-      register: ship,
-      options: {}
+    plugin.register.attributes = {
+      name: 'Wrappify',
+      version: '0.0.1'
     }
+    return plugin;
   };
 
   Wrappify.prototype.koa = function() {
@@ -46,6 +47,8 @@
       core.ship.bind(core)(this);
     }
   };
+
+
   wrappify = function(core) {
     return new Wrappify(core);
   };

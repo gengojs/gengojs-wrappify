@@ -23,25 +23,31 @@
     return this.core.ship.bind(this.core);
   };
 
-  Wrappify.prototype.hapi = function(plugin, options, next) {
+  Wrappify.prototype.hapi = function() {
     var core = this.core;
-
-    function ship(plugin, option, next) {
-      plugin.ext('onPreResponse', function(request, reply) {
-        core.ship.bind(core)(request);
-        reply.continue();
-      });
-      return next();
+    var plugin = {
+      register: function hapi(plugin, options, next) {
+        plugin.ext('onPreResponse', function(request, reply) {
+          core.ship.bind(core)(request);
+          reply.continue();
+        });
+        return next();
+      }
     }
-
-    return {
-      register: ship,
-      options: {}
+    plugin.register.attributes = {
+      name: 'Wrappify',
+      version: '0.0.1'
     }
+    return plugin;
   };
+
   wrappify = function(core) {
     return new Wrappify(core);
   };
+
+
+
+
 
   /************************************
       Exposing wrappify
