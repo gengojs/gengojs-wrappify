@@ -16,6 +16,8 @@ when running your tests.
 var assert = require('chai').assert;
 var core = require('gengojs-core');
 var header = require('your app path');
+// Wrappify with harmony 
+// (without harmony would simply be require('gengojs-wrappify'))
 var wrappify = require('gengojs-wrappify/harmony');
 
 describe('Header', function() {
