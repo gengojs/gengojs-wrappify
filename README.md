@@ -8,24 +8,24 @@ The following is an example that shows you to:
 * Make sure that the internal API is properly exposed.
 * Make sure that the internal API's API are exposed as well.
 
-Note that there are two version of Wrappify. One is without `harmony` and the other is.
-The example below is with harmony. Therefore, make sure to use the `--harmony` flag
-when running your tests.
+Note that there are two version of Wrappify. One is without `es6` and the other is.
+The example below is with ES6. Therefore, make sure to use the `--harmony` flag
+when running your tests or use Babel to convert your ES6 code to ES5.
 
 ```js
 var assert = require('chai').assert;
 var core = require('gengojs-core');
-var header = require('your app path');
-// Wrappify with harmony 
+var header = require('your plugin path');
+// Wrappify with harmony
 // (without harmony would simply be require('gengojs-wrappify'))
-var wrappify = require('gengojs-wrappify/harmony');
+var wrappify = require('gengojs-wrappify/es6');
 
 describe('Header', function() {
   describe('load plugins', function() {
     it('should exist', function() {
      // Create an instance of the core.
-      var gengo = core.create({}, header());
-      gengo.utils._.forEach(gengo.plugins.headers, function(plugin) {
+      var gengo = core({}, header());
+      gengo.plugins.headers.forEach(function(plugin) {
         assert.isDefined(plugin);
         assert.strictEqual(plugin.package.type, 'header');
         assert.strictEqual(plugin.package.name, 'gengojs-default-header');
@@ -33,7 +33,7 @@ describe('Header', function() {
     });
   });
   describe('koa', function() {
-    var gengo = core.create({}, header());
+    var gengo = core({}, header());
     var koa = require('koa');
     var app = koa();
     // Use Koa wrapper
@@ -48,7 +48,7 @@ describe('Header', function() {
   });
 
   describe('express', function() {
-    var gengo = core.create({}, header());
+    var gengo = core({}, header());
     var express = require('express');
     var app = express();
     var request = require('supertest');
@@ -63,7 +63,7 @@ describe('Header', function() {
   });
 
   describe('hapi', function() {
-    var gengo = core.create({}, header());
+    var gengo = core({}, header());
     var Hapi = require('hapi');
     var server = new Hapi.Server();
     server.connection({

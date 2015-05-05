@@ -27,6 +27,10 @@
     var core = this.core;
     var plugin = {
       register: function hapi(plugin, options, next) {
+        plugin.ext('onPreHandler', function(request, reply) {
+          global.ship.bind(global)(request);
+          reply.continue();
+        });
         plugin.ext('onPreResponse', function(request, reply) {
           core.ship.bind(core)(request);
           reply.continue();
