@@ -49,6 +49,7 @@
     var core = this.core;
     return function * (next) {
       core.ship.bind(core)(this);
+      yield next;
     }
   };
 
