@@ -47,9 +47,9 @@
 
   Wrappify.prototype.koa = function() {
     var core = this.core;
-    return function * (next) {
-      core.ship.bind(core)(this);
-      yield next;
+    return function (self, next) {
+      core.ship.bind(core)(self);
+      return next();
     }
   };
 

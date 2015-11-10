@@ -12,6 +12,8 @@ Note that there are two version of Wrappify. One is without `es6` and the other 
 The example below is with ES6. Therefore, make sure to use the `--harmony` flag
 when running your tests or use Babel to convert your ES6 code to ES5.
 
+Also note that the wrapper for koa only supports Koa >= `v2.0.0`.
+
 ```js
 var assert = require('chai').assert;
 var core = require('gengojs-core');
@@ -34,8 +36,8 @@ describe('Header', function() {
   });
   describe('koa', function() {
     var gengo = core({}, header());
-    var koa = require('koa');
-    var app = koa();
+    var Koa = require('koa');
+    var app = new Koa();
     // Use Koa wrapper
     app.use(wrappify(gengo).koa());
     var request = require('supertest');
